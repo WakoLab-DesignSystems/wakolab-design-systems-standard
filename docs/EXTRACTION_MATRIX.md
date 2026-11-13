@@ -28,13 +28,13 @@ Paths below are in `wakolab-front` at `e492bec` unless stated.
 | E1 | CSS, provider and overlay isolation incomplete | **Accepted.** Root isolation contract: root attribute, scoped emitted CSS, prefixed cascade layers, root-local provider, overlays inside the root | §4 | Multi-root and host-content isolation tests |
 | E2 | Dialog backdrop: the effective rule is `.wl-dialog::backdrop { var(--wl-scrim) }`, not the JSX literal | **Accepted.** Keep the CSS rule and the scrim token; drop the dead JSX literal; keep the `wl-rise` animation and its reduced-motion behaviour | §5.6 | Computed `::backdrop` background equals the mode's scrim, identical to the frontend, in light and dark |
 | E3 | "React-only imports" do not give a closed, styled dependency set | **Accepted.** Full closure, emitted CSS, base styles, declared dependencies and exports specified | §5.1, §9 | Isolated build, pack and external-consumer proof |
-| E4 | Icon rights must be resolved before copying into public repositories | **Accepted; blocking** for the icon file. Missing evidence and an explicit alternative listed | §10 | Recorded rights evidence or an approved alternative, before the icon file is copied |
+| E4 | Icon rights must be resolved before copying into public repositories | **Accepted; blocking** for the icon file. Verifiable provenance requested; a replacement is a separate proposal | §10 | Provenance facts recorded on the extraction issue and Orc's decision on them, before the icon file is copied |
 
 ## 3. Console-first scope
 
-**In:** Console tokens (light, dark), the Tailwind mapping and base styles it needs, all UI primitives, the neutral parts of N1, the shell, collection, detail, form and states compositions with Console's invariants, the keyboard layer, a root-local mode provider, the logo slot required by the accepted configuration model, Console's fonts and their notices, examples with synthetic data, and the checks of §8 and INDEPENDENCE_CHECK.
+**In:** Console tokens (light, dark), the Tailwind mapping and base styles it needs, all UI primitives, the neutral parts of N1, the shell, collection, detail, form and states compositions with Console's invariants, the keyboard layer, a root-local mode provider, **the explicit configuration of §5.7** (configuration file and `config.default.json` with light and dark colours, fonts and logos, and the logo slot it needs), Console's fonts and their notices, examples with synthetic data, and the checks of §8 and INDEPENDENCE_CHECK.
 
-**Out:** Folio and Marquee (later tasks, same method), every product behaviour (§6), the configuration file and `apply` command (optional, §11), and the optional improvements of §11.
+**Out:** Folio and Marquee (later tasks, same method), every product behaviour (§6), an `apply` command if one is chosen (§5.7, M1), and the optional improvements of §11.
 
 ## 4. Isolation contract (E1, N6)
 
@@ -102,6 +102,25 @@ Source: `ConsoleHome.tsx` lines 30–45. Copy as a hook attached to the collecti
 
 Keep `.wl-dialog::backdrop { background: var(--wl-scrim); }` (unlayered, as in the source, so it keeps winning over utilities) and the per-mode scrims (light `rgb(28 30 27 / 0.45)`, dark `rgb(0 0 0 / 0.6)`). Remove the dead `backdrop:bg-panel/60` utility from the JSX: it is overridden at `e492bec`, so the rendered backdrop does not change. Keep `.wl-dialog { animation: wl-rise … }` and the reduced-motion rules.
 
+### 5.7 Explicit configuration (accepted model)
+
+The accepted model ([central CONFIGURATION](https://github.com/WakoLab/wakolab/blob/be3ca126dd9a772faf0e35951a9ebac0a5a46762/docs/design/design-system-standard/CONFIGURATION.md)) is part of the Console-first scope. Two things are distinct:
+
+| Item | Status in Console-first | Content |
+| --- | --- | --- |
+| **Configuration file** `design-config.json` and the system's `config.default.json` | **In scope** | `system`, `systemVersion` (required); optional `colors.light` and `colors.dark` per colour role, `fonts.<role>` with local files, `logo` files and `alt`. Values are used exactly as written; omitted keys keep Console's defaults; nothing is derived, checked or approved. Only structure is reported (invalid JSON, unknown key, missing file) |
+| **`apply` command** | **Optional; not required** | A simple writer that would turn the file into a scoped stylesheet. It must not grow into a general configuration engine |
+
+A consumer must be able to use the configuration file without writing CSS. Setting custom properties on the root by hand stays possible as a low-level override, but it is documented as such and does not replace the file.
+
+**Modalities still to decide (M1–M3).** Each is an ordinary choice inside the accepted model; Sol's recommendation is given, and the implementation PR must demonstrate it.
+
+| ID | Question | Options | Recommendation |
+| --- | --- | --- | --- |
+| M1 | How the file reaches the page | (a) the root component accepts the parsed file as a `config` prop and sets the colour values as custom properties on the root for the current mode; (b) a build-time `apply` writer produces a scoped stylesheet | **(a)** for Console-first: no extra tool, works in any bundler that can import JSON; (b) may follow as an option |
+| M2 | Fonts from the file | (a) `@font-face` rules created at runtime from the listed files; (b) a stylesheet written by the optional `apply` command | **(a)**. Font faces cannot be scoped to a root: they are registered under the configured family name, which only the root's font roles use; the system's fallback stack is appended |
+| M3 | Logos from the file | The shell's logo slot reads `logo.mark`, `logo.wordmark` (one file or per mode) and `alt` | Same; without a logo, the text fallback renders exactly as the source |
+
 ## 6. What stays in the WakoLab frontend
 
 API ports and calls, the `/api` proxy, session and authentication, capabilities, catalog contracts and state (`useCatalogView`, `useProject`), routes, i18n catalogs and locales, the appearance preference key and its initial-paint logic, the `agent`/`human` identity colours, `Stage`, `Access`, `Roles`, `CodeVisibility`, `MineStatus`, `JoinPanel`, `ParticipationPanel`, `AccessNotice`, `MemberList`, `RepositoryList`, `ToolList`, `RewardsNote`, `TeamNotPublished`, registration and profile content, the prototype, product tests and the bundle budget. The frontend composes these into the system's slots (front#16).
@@ -126,22 +145,28 @@ Same contract as Console with their own root (`data-wds="folio"`, `"marquee"`). 
 | Build tools | `tailwindcss` and `@tailwindcss/vite` 4.1.16, `vite` 7.3.7, `typescript` 5.9.3, a pinned selector-prefixing PostCSS plugin, as dev dependencies. Node ≥ 24, as the source |
 | Outputs | `dist/index.js` (ESM, React external) with type declarations; `dist/console.css` (scoped, prebuilt) |
 | Exports | `"."` → components, parts, compositions, root and keyboard hook; `"./console.css"` → stylesheet |
+| Configuration | `config.default.json` (every key with Console's default value) and a JSON schema for `design-config.json`, shipped with the package |
 | Not copied | The `/api` proxy, the prototype entry, product scripts |
 | Closure check | Built output imports only React and the declared font packages; every icon, utility, keyframe and base rule used by the components is present in the emitted CSS |
 
 ## 10. Icon rights (E4)
 
-Facts: the icon paths entered the frontend through its own commits (`5cc01ff`, `53f50d0`, then `d20db27`), with no recorded origin, author statement or licence. MIT on the destination does not establish source rights.
+**Known facts.** The same path data first appears in `wakolab-front` commit `5cc01ff` (`design-system/explorations/theme-directions/prototype/src/icons.tsx`), then in `53f50d0` and `d20db27` (`web/src/components/ui/icons.tsx`). None of these commits records where the paths came from, who drew them, or a licence. MIT on the destination does not establish source rights.
 
-**Missing evidence:** a recorded statement, on the Console extraction issue, that the 24 px outline paths are original project work that may be published under MIT, or the identification of their source and its licence.
+**Evidence requested: verifiable provenance, not an attestation.** Before `icons.tsx` is copied into a public repository, the Console extraction issue records:
+1. the work record behind `5cc01ff`: the task, handoff or session notes of the role that produced the exploration, stating how the paths were made (drawn in the project, generated, or copied, and from what);
+2. a comparison of each path string with common public icon sets, listing any match with its source and licence;
+3. if a source is found, its licence and the notice to keep.
 
-**Alternative if the evidence cannot be given:** an explicitly approved replacement set under a permissive licence, chosen with Des and recorded with its notice. That is a visual change and must not be silent.
+Gathering this is evidence work that Orc can assign (the role that produced `5cc01ff`, with Sol). midas is not asked to attest an originality that may not be known; the decision to copy is taken on the recorded facts.
 
-Until one of the two is recorded, `icons.tsx` is **not copied**. The other files can be prepared, but the Console extraction cannot pass its checks without icons.
+**Separate proposal, only if provenance stays unclear or incompatible:** a replacement icon set under a permissive licence, chosen with Des and approved explicitly. It is a visual change and a distinct task, not part of the faithful extraction.
+
+Until the evidence is recorded, `icons.tsx` is **not copied**. The other files can be prepared, but the Console extraction cannot pass its checks without icons.
 
 ## 11. Optional improvements (separate from extraction)
 
-Not prerequisites; each needs its own task: wrapping row tagline (G13); distinct pressed and destructive-hover tokens (D4); easing values and exit motion; form error summary; neutral renaming of `Badge`, `ConnectionRow`, the `agent`/`human` icons and the `.wl-*`/`--wl-*` prefixes; DTCG tooling; the configuration file and `apply` command.
+Not prerequisites; each needs its own task: wrapping row tagline (G13); distinct pressed and destructive-hover tokens (D4); easing values and exit motion; form error summary; neutral renaming of `Badge`, `ConnectionRow`, the `agent`/`human` icons and the `.wl-*`/`--wl-*` prefixes; DTCG tooling; an `apply` command (§5.7).
 
 ## 12. Structural choices (recommendation and consequences)
 
@@ -149,15 +174,25 @@ Not prerequisites; each needs its own task: wrapping row tagline (G13); distinct
 | --- | --- | --- | --- |
 | S1 | Prebuilt scoped CSS, or consumer-side Tailwind scanning | **Prebuilt scoped CSS** | Consumers need no Tailwind; utilities cannot be reused by the host with Console tokens unless the host sets up its own build |
 | S2 | Isolation by root attribute and selector prefix, keeping `.wl-*`/`--wl-*`; or renaming classes per system | **Root prefix, keep names** | Faithful copies and simple diffs; consumer overrides must target `[data-wds="console"][data-mode="…"]`; renaming stays optional |
-| S3 | Distribution without publication | **Git dependency pinned by commit**, building `dist/` on install (`prepare`), or a copied folder | No registry or release needed (H6 untouched); installing needs the npm registry for dependencies and Node ≥ 24 |
+| S3 | Distribution without publication | **Git dependency pinned by commit with a `prepare` build**, with clone-and-build always documented; see the comparison below | No registry or release needed (H6 untouched); installing needs the npm registry for third-party dependencies and Node ≥ 24 |
 | S4 | Icons | **Record rights evidence** (human); otherwise an approved replacement (Des, via Orc) | Blocks copying of `icons.tsx` until decided |
+
+**S3 comparison (no option publishes anything):**
+
+| Option | User simplicity | Reproducibility | Constraints |
+| --- | --- | --- | --- |
+| Clone and build: `git clone`, `npm ci`, `npm run build`, then use `dist/` or the source | Lowest: several manual steps | Exact by commit; build reproducible from the lockfile | Node ≥ 24 and dev dependencies on the consumer's machine; the consumer copies or links the result |
+| Local package: `npm pack` in a clone, then install the tarball by `file:` path | Medium: one install line once the tarball exists | Highest: a fixed file with an integrity hash in the consumer's lockfile | Someone must produce and keep the tarball; it must not be uploaded to a registry or release without H6 |
+| Git dependency with `prepare`: `npm install` from the repository at a commit | Highest: one install line | Pinned by commit; the build runs on the consumer's machine, so results depend on the toolchain; npm records the commit, not a tarball integrity hash | Slower installs; dev dependencies downloaded at install; Node ≥ 24 |
+
+Clone and build is the baseline every system documents; Git with `prepare` is the recommended day-to-day path; the local package fits offline or CI use.
 
 ## 13. Executable tasks (proposal)
 
 | Order | Task | Owner | Depends on | Acceptance |
 | --- | --- | --- | --- | --- |
-| T0 | Icon rights evidence or approved alternative | midas (evidence); Des via Orc only if replaced | — | Recorded on the Console extraction issue |
-| T1 | Console extraction ([console#1](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-console/issues/1)) | Dev/Rev pair named by Orc | This plan, T0 | §4–§9 implemented with provenance headers; [INDEPENDENCE_CHECK](INDEPENDENCE_CHECK.md) passes, including multi-root isolation; visual parity (§8) passes; keyboard, dialog and reduced-motion checks pass; contrast of shipped defaults passes |
+| T0 | Icon provenance evidence (§10) | Assigned by Orc (the role that produced `5cc01ff`, with Sol) | — | Facts recorded on the Console extraction issue; Orc decides on them. A replacement, if needed, is a separate proposal with Des |
+| T1 | Console extraction ([console#1](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-console/issues/1)) | Dev/Rev pair named by Orc | This plan, T0 | §4–§9 implemented with provenance headers, including the configuration file (§5.7); [INDEPENDENCE_CHECK](INDEPENDENCE_CHECK.md) passes, including multi-root isolation; visual parity (§8) passes; keyboard, dialog and reduced-motion checks pass; contrast of shipped defaults passes |
 | T2 | Frontend consumption ([front#16](https://github.com/WakoLab/wakolab-front/issues/16)) | Dev/Rev pair named by Orc | T1 merged | Console pinned by commit; the frontend's Console copies removed; its product tests pass unchanged; Console screens pass the same parity gate; Folio and Marquee unchanged; the app root gives the Console root full-page height so the page background is unchanged |
 | T3, T4 | Folio, then Marquee | Dev/Rev pairs | T1 method validated by T2 | Same gates with their own invariants (§7) |
 
@@ -165,7 +200,12 @@ Each task is one reviewed PR in one repository; rollback is reverting it, or re-
 
 ## 14. Remaining blockers and decisions
 
-- **E4 / T0:** icon rights evidence or an approved alternative (human).
-- **S1–S3:** Sol's recommendations; Revex reviews them, Orc decides if a tradeoff is contested.
-- **H1, H4 (owners), H5 (Web only, proposed) and H6 (publication)** stay open for midas; this plan needs none of them for T1–T2, because it uses no registry and no release.
-- Browser support for the scoped `::backdrop` is verified by the T1 checks, not assumed.
+| Level | Items |
+| --- | --- |
+| This documentation PR | Prepares the plan only. Revex reviews it; it targets `dev` once that branch exists. It authorizes nothing |
+| Facts to gather | Icon provenance (§10, T0); the copy of `icons.tsx` waits for it |
+| Ordinary choices recommended here | S1–S3 and M1–M3; Revex reviews them, Orc settles any contested tradeoff |
+| midas's decisions | **H1** (acceptance of the standard) and **H5** (Web as the first platform, still a proposal) bear directly on T1 and T2, which implement a Web adapter of the proposed standard. Whether they must be settled before T1 is Orc's and midas's call; this plan does not assume it. **H4** (owners) and **H6** (publication) do not block T1 or T2, which use no registry, release or new repository; they are needed before any publication |
+| Orc's authorization | T1, T2 and the later tasks each need Orc's explicit implementation authorization; no row of §13 is pre-authorized |
+
+Browser support for the scoped `::backdrop` and the runtime configuration (M1–M2) are verified by the T1 checks, not assumed. Every behaviour described in this plan remains to be demonstrated by the implementation.

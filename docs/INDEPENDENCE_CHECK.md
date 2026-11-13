@@ -35,7 +35,7 @@ In a second empty directory: create a minimal Vite + React app (the same React v
 | Check | Passes when |
 | --- | --- |
 | Renders alone | The example renders with no other repository present |
-| Configuration | A consumer stylesheet sets a few light and dark values on the root; the computed custom properties equal the values written in each mode; omitted keys keep the defaults; a local font and a local logo load. Consumer values are never judged |
+| Configuration | A `design-config.json` sets a few light and dark colours, a local font and a local logo, and is applied by the chosen modality (EXTRACTION_MATRIX §5.7, M1–M3) without any consumer CSS. The computed custom properties equal the values written in each mode; omitted keys keep the defaults; the font and logo load; removing a key restores its default. A malformed file or missing asset only produces a structural message. Consumer values are never judged |
 | No `/api` or product call | The page makes no request other than its own assets |
 
 ## 4. Isolation (E1, N6)
