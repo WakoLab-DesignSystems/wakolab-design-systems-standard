@@ -1,6 +1,6 @@
 # Directions for a WakoLab design system
 
-Status: **proposal; not accepted.** This is a short summary of the active proposal in the WakoLab central repository (PR #49 at `55d0c3f`, `docs/design/design-system-standard/`: CONFIGURATION, STANDARD, PROFILES, AGENT_CONTRACT). That PR is still under review, so these directions may change. A fuller copy will follow, with provenance, once it is reviewed.
+Status: **proposal; not accepted (H1 open).** This is a short summary of the proposal integrated in the WakoLab central repository (`dev` at `be3ca12`, `docs/design/design-system-standard/`: CONFIGURATION, STANDARD, PROFILES, AGENT_CONTRACT). A fuller copy may follow, with provenance.
 
 ## 1. A system is autonomous
 
@@ -8,6 +8,7 @@ Status: **proposal; not accepted.** This is a short summary of the active propos
 - No shared runtime, package, submodule or sibling checkout. A component needed by several systems is copied into each, with its provenance.
 - Third-party dependencies are declared in the system's own repository.
 - The system's README links to this repository for directions; that is documentation, not a dependency.
+- Each system renders only inside its own root element, with its mode on that root; its CSS, provider and overlays never affect content outside that root ([isolation contract](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6)).
 
 ## 2. What a system contains
 
