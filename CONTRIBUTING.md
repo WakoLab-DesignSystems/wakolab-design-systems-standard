@@ -5,9 +5,19 @@ Thank you for helping. This is an open-source project under the MIT licence. Con
 ## How to contribute
 
 1. Open or pick an issue, and agree the intended result in it before large changes.
-2. Work on a branch and open a pull request against `main`. Keep it focused, and explain what changed, why, and how you verified it.
+2. Create a dedicated branch for the issue from the current `dev` and open a pull request against `dev`. Keep it focused, and explain what changed, why, and how you verified it.
 3. Preserve other people's work, history and provenance. Never rewrite published history.
-4. A maintainer reviews the pull request; merging requires a maintainer's decision.
+4. Obtain independent review; Orc authorizes integration of the exact reviewed HEAD and Rel performs the merge.
+
+## Integration and promotion
+
+This workflow governs contributions to this repository, not projects that consume the design system.
+
+- Start each issue on a dedicated branch from the current `dev`; target `dev` for the pull request. Do not commit directly to `dev`, `staging` or `main`.
+- Obtain independent review and the technical validations required by the issue. Orc (Product Owner and orchestrator) checks the evidence and explicitly authorizes the exact HEAD; Rel performs the merge. Any candidate change requires the affected validations to be checked again.
+- After integration into `dev`, validate the identified integrated version in order: Sol (architecture/technical validation), Orc (criteria and evidence), then midas (Product Manager and CTO) for local human acceptance. Documentation-only changes need documentary checks, not unrelated product tests.
+- Promotion to `staging` requires a separate GO from midas. When a staging environment exists, validate that version there before creating a release and seeking a separate production GO. An absent environment must not be reported as validated.
+- Production uses the existing `main` branch; do not create or rename it to `master`. Integration, human acceptance, release creation and deployment are separate events. Creating branches does not prove any of them. Package or site publication also needs explicit authorization.
 
 ## Rules
 
