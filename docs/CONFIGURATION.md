@@ -44,7 +44,9 @@ Each system repository ships a **`config.default.json`** listing every key with 
 | `scrim` | CSS `<color>` | Overlay backdrop |
 | `shadow-card`, `shadow-pop` | CSS `box-shadow` value | Card and overlay elevation (`none` allowed) |
 
-**Omitted roles** keep the system's default for that mode, with one exception defined by reference: `action-pressed` (above). **[proposed choice] M4:** whether a system default written as "same as `action`" (for example Console's `link` and light `focus`) follows a configured `action` or keeps the literal default. Recommendation: follow the effective value of the referenced role in the same mode, as for `action-pressed`; consequence: changing `action` alone also changes those roles unless they are set explicitly. Until decided, implementations must document which behaviour they ship.
+**Omitted roles** keep the system's shipped default for that mode. The **only** exception is `action-pressed`, which uses the effective `action-hover` of the same mode (above). In particular, configuring `action` alone does **not** change `link` or `focus`, even where the system's default for them equals the default `action`; set them explicitly to change them. Implementations must not choose another behaviour.
+
+*Deferred proposal (M4), not part of this contract:* letting such roles follow a configured `action`. It changes behaviour only if Orc and midas explicitly accept it, with a new version of this specification.
 
 ## 3. Fonts
 
@@ -59,7 +61,7 @@ Each system repository ships a **`config.default.json`** listing every key with 
 | `family` | string | The consumer's label for the font |
 | `files` | array, optional | Font files, each `{ "src": Asset, "weight"?: string, "style"?: string, "stretch"?: string, "unicodeRange"?: string }`, with CSS `@font-face` descriptor syntax |
 
-- **With `files`:** the faces are registered under an **internal family name** owned by the system and the root, never under `family`. Two roots, or a host, may use the same `family` with different files without affecting each other ([EXTRACTION_MATRIX §4](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6), R2). The `family` label is kept for documentation and diagnostics.
+- **With `files`:** all the role's files form **one face set**, registered under **one internal family name** owned by the system, never under `family`. Each file keeps its own descriptors, so bold, italic and subset files are selected normally within that family. Two roots, or a host, may use the same `family` with different files without affecting each other ([EXTRACTION_MATRIX §4](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6), R2). The `family` label is kept for documentation and diagnostics.
 - **Without `files`:** `family` is used as the name of a font already available to the page (installed, or loaded by the host). It is global by nature; that is the consumer's choice.
 - The system's fallback stack for the role is always appended, so scripts the font does not cover stay readable.
 - Removing a role, or the whole `fonts` key, returns the role to the system default.
