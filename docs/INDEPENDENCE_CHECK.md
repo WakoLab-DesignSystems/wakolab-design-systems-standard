@@ -1,6 +1,6 @@
 # Independence check: isolated clone, external consumer and isolation
 
-Status: **proposal for [#1](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/1).** Revised for Revex's E1 and E3 and Des's N5–N6 ([disposition](EXTRACTION_MATRIX.md#2-disposition-of-n1n8-and-e1e4)); [previous text](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/blob/80e6f97cecabe09526a14b50e41bceeb70674bef/docs/INDEPENDENCE_CHECK.md). Each system's extraction PR runs this check in its own repository and attaches the results. It is not run by this documentation PR.
+Status: **proposal for [#1](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/1).** Revised for Revex's E1 and E3 and Des's N5–N6 ([disposition](EXTRACTION_MATRIX.md#2-disposition-of-n1n8-and-e1e4)), then for Revex's R1–R4 ([disposition](EXTRACTION_MATRIX.md#disposition-of-r1r4-and-related-observations)); [previous text](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/blob/80e6f97cecabe09526a14b50e41bceeb70674bef/docs/INDEPENDENCE_CHECK.md). Each system's extraction PR runs this check in its own repository and attaches the results. It is not run by this documentation PR.
 
 ## 1. Setup
 
@@ -24,7 +24,8 @@ cd system && npm ci && npm run build && npm test && npm pack
 | No inter-repository dependency | No `.gitmodules`. `package.json` and the lockfile contain no Git URL, `file:` path or workspace reference to a WakoLab or WakoLab-DesignSystems repository. The package's **own** name and README documentation links are allowed |
 | Declared dependencies | Every import in `dist/index.js` is `react`, `react-dom`, `react/jsx-runtime` or the package itself; every `@import` in the stylesheet is a declared font package |
 | Closed styling | Every class used by the components and examples is present in the emitted stylesheet (utilities, `.wl-*` pieces, keyframes, base rules) |
-| Scoped CSS | Apart from `@font-face` and `@keyframes`, every selector in the emitted stylesheet starts with the system root; no rule targets `:root`, `html`, `body` or a bare `*`; cascade layers carry the system prefix |
+| Scoped CSS | Every selector in the emitted stylesheet starts with the system root; no rule targets `:root`, `html`, `body` or a bare `*`; cascade layers carry the system prefix |
+| Global symbols (R1) | An audit of the emitted stylesheet lists every global name: `@keyframes`, `@property`, `@counter-style`, `@font-palette-values`, `@position-try`, `view-transition-name`, `@font-face` families. Each carries the `wds-<system>-` prefix in its definition and in every reference (`animation`, `animation-name`, `var()`, `font-family`), or is listed with its reason |
 | ESM order | Importing `ConfirmDialog` alone from the built output works (no circular-import error) |
 | Shipped defaults | Contrast of the declared pairs passes in both modes; axe finds no violation on each named example; keyboard, dialog and reduced-motion checks pass |
 
@@ -35,7 +36,7 @@ In a second empty directory: create a minimal Vite + React app (the same React v
 | Check | Passes when |
 | --- | --- |
 | Renders alone | The example renders with no other repository present |
-| Configuration | A `design-config.json` sets a few light and dark colours, a local font and a local logo, and is applied by the chosen modality (EXTRACTION_MATRIX §5.7, M1–M3) without any consumer CSS. The computed custom properties equal the values written in each mode; omitted keys keep the defaults; the font and logo load; removing a key restores its default. A malformed file or missing asset only produces a structural message. Consumer values are never judged |
+| Configuration | The [example file](examples/design-config.example.json), adapted to the app's asset folder, is passed with an `assetBase` and applied by the chosen modality (EXTRACTION_MATRIX §5.7, M1–M4) without any consumer CSS. The computed custom properties equal the values written in each mode; omitted keys keep the defaults; an omitted `action-pressed` equals the effective `action-hover` of the same mode; the font and both logo forms load from the consumer's files; removing a key restores its default at the next render; without a logo the text fallback renders. A malformed file or missing asset only produces a structural message. Consumer values are never judged |
 | No `/api` or product call | The page makes no request other than its own assets |
 
 ## 4. Isolation (E1, N6)
@@ -47,10 +48,14 @@ One page with:
 | Check | Passes when |
 | --- | --- |
 | Host untouched | The host elements' computed styles (font, colours, margins, focus outline, animation) are identical with and without the system stylesheet loaded |
+| Global-symbol collisions (R1) | The host stylesheet and a second "foreign system" fixture stylesheet define the source's unprefixed names (`wl-rise`, `wl-spin`, `wl-shimmer`, `spin`) with different keyframes, and register `@property --tw-*` names with different syntax or initial values. Loaded **before and after** the system stylesheet, in both orders: host and fixture animations keep their own keyframes and values; the system's animations and computed values are unchanged |
+| Fonts (R2) | Two roots and the host each use the same `family` label (for example `Example Sans`) with **different** files: each renders its own file (checked through `document.fonts` and rendered glyph metrics). Replacing one root's file switches only that root; removing the role restores the default; unmounting releases the faces, and the last release removes the registration. Default fonts are unaffected by a host face that reuses the public family name |
 | Roots independent | Each root resolves its own tokens and mode; switching one root's mode does not change the other; the provider never writes `document.documentElement` or `body` |
 | Overlays | A dialog, confirm dialog, popover and toast opened in each root use that root's tokens; each dialog's `::backdrop` equals the root's scrim; focus returns to the trigger |
+| Overlay events and focus (R3) | With a popover open in root A: Escape typed in host content or in root B does not close it and moves no focus; Escape inside it closes it and returns focus to its trigger; an outside pointer-down closes it without moving focus. With popovers open in both roots, each reacts only to its own focus. With a nested popover, Escape closes the innermost first. Listeners are removed after close and unmount (no handler left on `document`). A native modal dialog makes host content and the other root inert while open, as intended; the keyboard layer and popover shortcuts of every root stay suppressed until it closes |
 | Reduced motion | With reduced motion, animations stop inside the roots and the host's animation is unaffected |
-| Keyboard layer | `/`, `j` and `k` act only on the root whose collection is active; ignored in host inputs and while a dialog is open |
+| Keyboard layer | With the default root-scoped listener, `/`, `j` and `k` act only on the root that holds focus; ignored in host inputs, editable content and while any modal dialog is open. With the page-level option on a single root, `/` also works when nothing is focused |
+| Nested roots | Not tested: nested system roots are not supported in v1 (EXTRACTION_MATRIX §4) |
 
 ## 5. Visual parity
 

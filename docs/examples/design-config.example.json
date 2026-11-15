@@ -1,0 +1,29 @@
+{
+  "system": "console",
+  "systemVersion": "0.1.0",
+  "colors": {
+    "light": {
+      "action": "#0e7c66",
+      "action-hover": "#0a6754",
+      "link": "#0e7c66",
+      "focus": "#0e7c66"
+    },
+    "dark": {
+      "action": "#76d2b9",
+      "action-hover": "#8ae6cd",
+      "on-action": "#071d17",
+      "link": "#76d2b9"
+    }
+  },
+  "fonts": {
+    "ui": {
+      "family": "Example Mono",
+      "files": [{ "src": "fonts/example-mono.woff2", "weight": "100 800", "style": "normal" }]
+    }
+  },
+  "logo": {
+    "mark": "logo/mark.svg",
+    "wordmark": { "light": "logo/wordmark-light.svg", "dark": "logo/wordmark-dark.svg" },
+    "alt": "Example App home"
+  }
+}

@@ -8,7 +8,7 @@ Status: **proposal; not accepted (H1 open).** This is a short summary of the pro
 - No shared runtime, package, submodule or sibling checkout. A component needed by several systems is copied into each, with its provenance.
 - Third-party dependencies are declared in the system's own repository.
 - The system's README links to this repository for directions; that is documentation, not a dependency.
-- Each system renders only inside its own root element, with its mode on that root; its CSS, provider and overlays never affect content outside that root ([isolation contract](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6)).
+- Each system renders only inside its own root element, with its mode on that root; its CSS, global CSS names, fonts, provider and event handlers do not affect content outside that root. The one intended exception is a native modal dialog, which makes the whole page inert while it is open ([isolation contract](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6)).
 
 ## 2. What a system contains
 
@@ -20,7 +20,7 @@ Status: **proposal; not accepted (H1 open).** This is a short summary of the pro
 
 ## 3. Configuration
 
-Every system exposes the same keys:
+The full public specification, with an example, is [CONFIGURATION](CONFIGURATION.md). In short, every system exposes the same keys:
 - `colors.light` and `colors.dark`: explicit values per colour role;
 - `fonts.<role>`: a family and local font files;
 - `logo`: local files and an accessible name.
