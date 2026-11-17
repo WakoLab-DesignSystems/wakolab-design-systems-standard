@@ -1,0 +1,24 @@
+{
+  "system": "{{SYSTEM}}",
+  "name": "{{SYSTEM_NAME}}",
+  "version": "{{REPLACE}}",
+  "standard": {
+    "repository": "https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard",
+    "commit": "{{STANDARD_SHA}}"
+  },
+  "entryPoints": {
+    "readme": "README.md",
+    "agents": "AGENTS.md",
+    "rules": "docs/rules/README.md",
+    "configDefaults": "config.default.json",
+    "configSchema": "config.schema.json",
+    "configExample": "examples/config/design-config.json"
+  },
+  "declaredRoles": [],
+  "deliverables": {
+    "htmlFile": "{{REPLACE: path, or not-delivered}}",
+    "docker": "{{REPLACE: path, or not-delivered}}",
+    "figma": "{{REPLACE: path, or not-delivered}}"
+  },
+  "platforms": { "web": "{{REPLACE}}" }
+}

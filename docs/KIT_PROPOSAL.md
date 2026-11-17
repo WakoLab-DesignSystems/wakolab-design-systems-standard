@@ -2,6 +2,8 @@
 
 Status: **proposal by Sol for [#6](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6), revised after midas's arbitration and Orc's framing ([comment](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6#issuecomment-6930098554)), then corrected for Revex's K-R1–K-R5 ([review](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/pull/7#pullrequestreview-5929904901)).** Not implemented. It builds on the integrated standard (`dev` at `6dc2a7a`) and on Console as integrated and accepted by midas at `018fe3214e0a118162d202c2f39f1236f37b1936`. It changes nothing in Console, the WakoLab frontend or any repository setting. The first version of this proposal is at [`0237f34`](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/blob/0237f341511b011e9905d8bfa6db745bf51605b8/docs/KIT_PROPOSAL.md).
 
+> **Decision record (added under [#8](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/8)).** midas accepted K1–K7 of §7 within the presented scope ([decision](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6#issuecomment-6933743616)). The resulting directions are in [DIRECTIONS](DIRECTIONS.md), [CONFIGURATION](CONFIGURATION.md), [CHECKLIST](CHECKLIST.md), [CATALOGUE](CATALOGUE.md) and the [template](../template/TEMPLATE.md). The decision does not prove feasibility, buy a Figma plan, authorize hosting or publication, change permissions or modify the WakoLab frontend; M4, the nested-root policy and external catalogue listing stay outside it. The text below is kept as the proposal that was accepted, with its review history.
+
 Goal (midas): each design system is an **autonomous kit** that people and agents can understand, discover, try, customize and reuse in an external project.
 
 **Decided and requested (midas):**
@@ -152,6 +154,8 @@ Reviewer routing follows **the model that actually implements the work**: Codex 
 **Folio and Marquee extractions (E, F) do not depend on D.** Their HTML and Docker deliverables can be produced in the extraction batch or in a follow-up batch of the same shape as B and C. Their `.fig` follows D.
 
 ## 7. Arbitrations for midas
+
+**Accepted by midas** on 2026-11-17 for K1–K7 below ([decision](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6#issuecomment-6933743616)). The table keeps the wording that was accepted.
 
 | ID | Question | Recommendation | Consequence |
 | --- | --- | --- | --- |

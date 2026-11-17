@@ -3,7 +3,7 @@ Shared standards and contribution guidelines for reusable open-source design sys
 
 ## Status
 
-Bootstrap only. This repository holds **authoring and documentation directions** for WakoLab design systems; it ships no code that other repositories import. The directions are a proposal until accepted (tracked in [#1](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/1)).
+This repository holds **authoring and documentation directions** for WakoLab design systems; it ships no code that other repositories import. The kit policy (K1–K7) was accepted by midas ([decision](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6#issuecomment-6933743616)) and is applied in [DIRECTIONS](docs/DIRECTIONS.md). Delivery status per system is in the [catalogue](docs/CATALOGUE.md).
 
 ## What this repository is, and is not
 
@@ -18,10 +18,13 @@ Each system repository (Console, Folio, Marquee) is **autonomous**: it can be cl
 
 | Document | Content |
 | --- | --- |
-| [docs/DIRECTIONS.md](docs/DIRECTIONS.md) | Directions for a new system (proposal) |
-| [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Public specification of the configuration file (colours, fonts, logos), with a [synthetic example](docs/examples/design-config.example.json) (proposal) |
+| [docs/DIRECTIONS.md](docs/DIRECTIONS.md) | Directions for a design-system kit (accepted kit policy) |
+| [docs/CHECKLIST.md](docs/CHECKLIST.md) | Conformance checklist |
+| [docs/CATALOGUE.md](docs/CATALOGUE.md) | Systems and their real delivery status |
+| [template/TEMPLATE.md](template/TEMPLATE.md) | Copyable minimal repository template |
+| [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Public specification of the configuration file (colours, fonts, logos, system-declared roles), with a [synthetic example](docs/examples/design-config.example.json) |
 | [docs/EXTRACTION_MATRIX.md](docs/EXTRACTION_MATRIX.md) | Source in the WakoLab frontend → autonomous copy in each system repository → adaptation needed |
-| [docs/KIT_PROPOSAL.md](docs/KIT_PROPOSAL.md) | Distributable kit layout, usage paths, new-system path and conformance checklist (proposal, #6) |
+| [docs/KIT_PROPOSAL.md](docs/KIT_PROPOSAL.md) | The kit proposal accepted as K1–K7, with its rationale and review history (#6) |
 | [docs/INDEPENDENCE_CHECK.md](docs/INDEPENDENCE_CHECK.md) | How to prove that a system works from an isolated clone |
 
 ## Licence
