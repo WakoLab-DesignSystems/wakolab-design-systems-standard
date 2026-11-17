@@ -175,7 +175,8 @@
       "additionalProperties": false,
       "properties": {
         "family": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "files": {
           "type": "array",
@@ -203,9 +204,13 @@
                 "type": "string"
               }
             }
-          }
+          },
+          "minItems": 1
         }
-      }
+      },
+      "required": [
+        "family"
+      ]
     }
   }
 }

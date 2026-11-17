@@ -78,8 +78,8 @@ The defaults come from the WakoLab frontend at `e492bec` ([KIT_PROPOSAL §8](KIT
 
 | Field | Type | Meaning |
 | --- | --- | --- |
-| `family` | string | The consumer's label for the font |
-| `files` | array, optional | Font files, each `{ "src": Asset, "weight"?: string, "style"?: string, "stretch"?: string, "unicodeRange"?: string }`, with CSS `@font-face` descriptor syntax |
+| `family` | string, **required** in every supplied role | The consumer's label for the font |
+| `files` | array, optional; **if present, at least one file** | Font files, each `{ "src": Asset, "weight"?: string, "style"?: string, "stretch"?: string, "unicodeRange"?: string }`, with CSS `@font-face` descriptor syntax |
 
 - **With `files`:** all the role's files form **one face set**, registered under **one internal family name** owned by the system, never under `family`. Each file keeps its own descriptors, so bold, italic and subset files are selected normally within that family. Two roots, or a host, may use the same `family` with different files without affecting each other ([EXTRACTION_MATRIX §4](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6), R2). The `family` label is kept for documentation and diagnostics.
 - **Without `files`:** `family` is used as the name of a font already available to the page (installed, or loaded by the host). It is global by nature; that is the consumer's choice.
