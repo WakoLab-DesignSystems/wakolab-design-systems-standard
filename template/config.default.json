@@ -1,0 +1,74 @@
+{
+  "system": "{{SYSTEM}}",
+  "systemVersion": "{{REPLACE}}",
+  "colors": {
+    "light": {
+      "bg": "{{REPLACE}}",
+      "surface": "{{REPLACE}}",
+      "surface-2": "{{REPLACE}}",
+      "ink": "{{REPLACE}}",
+      "muted": "{{REPLACE}}",
+      "border": "{{REPLACE}}",
+      "control": "{{REPLACE}}",
+      "action": "{{REPLACE}}",
+      "action-hover": "{{REPLACE}}",
+      "on-action": "{{REPLACE}}",
+      "link": "{{REPLACE}}",
+      "focus": "{{REPLACE}}",
+      "accent": "{{REPLACE}}",
+      "success": "{{REPLACE}}",
+      "success-soft": "{{REPLACE}}",
+      "warning": "{{REPLACE}}",
+      "warning-soft": "{{REPLACE}}",
+      "danger": "{{REPLACE}}",
+      "danger-soft": "{{REPLACE}}",
+      "info": "{{REPLACE}}",
+      "info-soft": "{{REPLACE}}",
+      "on-danger": "{{REPLACE}}",
+      "scrim": "{{REPLACE}}",
+      "shadow-card": "{{REPLACE}}",
+      "shadow-pop": "{{REPLACE}}"
+    },
+    "dark": {
+      "bg": "{{REPLACE}}",
+      "surface": "{{REPLACE}}",
+      "surface-2": "{{REPLACE}}",
+      "ink": "{{REPLACE}}",
+      "muted": "{{REPLACE}}",
+      "border": "{{REPLACE}}",
+      "control": "{{REPLACE}}",
+      "action": "{{REPLACE}}",
+      "action-hover": "{{REPLACE}}",
+      "on-action": "{{REPLACE}}",
+      "link": "{{REPLACE}}",
+      "focus": "{{REPLACE}}",
+      "accent": "{{REPLACE}}",
+      "success": "{{REPLACE}}",
+      "success-soft": "{{REPLACE}}",
+      "warning": "{{REPLACE}}",
+      "warning-soft": "{{REPLACE}}",
+      "danger": "{{REPLACE}}",
+      "danger-soft": "{{REPLACE}}",
+      "info": "{{REPLACE}}",
+      "info-soft": "{{REPLACE}}",
+      "on-danger": "{{REPLACE}}",
+      "scrim": "{{REPLACE}}",
+      "shadow-card": "{{REPLACE}}",
+      "shadow-pop": "{{REPLACE}}"
+    }
+  },
+  "fonts": {
+    "ui": {
+      "family": "{{REPLACE}}"
+    },
+    "display": {
+      "family": "{{REPLACE}}"
+    },
+    "prose": {
+      "family": "{{REPLACE}}"
+    },
+    "code": {
+      "family": "{{REPLACE}}"
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "{{SYSTEM_NAME}} design-config.json",
+  "description": "Structure only. Add this system's declared roles to $defs.colors.properties. Values are never judged.",
+  "type": "object",
+  "required": [
+    "system",
+    "systemVersion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "system": {
+      "const": "{{SYSTEM}}"
+    },
+    "systemVersion": {
+      "type": "string"
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "$ref": "#/$defs/colors"
+        },
+        "dark": {
+          "$ref": "#/$defs/colors"
+        }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ui": {
+          "$ref": "#/$defs/font"
+        },
+        "display": {
+          "$ref": "#/$defs/font"
+        },
+        "prose": {
+          "$ref": "#/$defs/font"
+        },
+        "code": {
+          "$ref": "#/$defs/font"
+        }
+      }
+    },
+    "logo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mark": {
+          "type": "string",
+          "minLength": 1
+        },
+        "wordmark": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "light",
+                "dark"
+              ],
+              "properties": {
+                "light": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dark": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ]
+        },
+        "alt": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bg": {
+          "type": "string"
+        },
+        "surface": {
+          "type": "string"
+        },
+        "surface-2": {
+          "type": "string"
+        },
+        "ink": {
+          "type": "string"
+        },
+        "muted": {
+          "type": "string"
+        },
+        "border": {
+          "type": "string"
+        },
+        "control": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "action-hover": {
+          "type": "string"
+        },
+        "action-pressed": {
+          "type": "string"
+        },
+        "on-action": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        },
+        "focus": {
+          "type": "string"
+        },
+        "accent": {
+          "type": "string"
+        },
+        "success": {
+          "type": "string"
+        },
+        "success-soft": {
+          "type": "string"
+        },
+        "warning": {
+          "type": "string"
+        },
+        "warning-soft": {
+          "type": "string"
+        },
+        "danger": {
+          "type": "string"
+        },
+        "danger-soft": {
+          "type": "string"
+        },
+        "info": {
+          "type": "string"
+        },
+        "info-soft": {
+          "type": "string"
+        },
+        "on-danger": {
+          "type": "string"
+        },
+        "scrim": {
+          "type": "string"
+        },
+        "shadow-card": {
+          "type": "string"
+        },
+        "shadow-pop": {
+          "type": "string"
+        }
+      }
+    },
+    "font": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "src"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "src": {
+                "type": "string",
+                "minLength": 1
+              },
+              "weight": {
+                "type": "string"
+              },
+              "style": {
+                "type": "string"
+              },
+              "stretch": {
+                "type": "string"
+              },
+              "unicodeRange": {
+                "type": "string"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "family"
+      ]
+    }
+  }
+}

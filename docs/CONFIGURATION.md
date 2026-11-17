@@ -1,6 +1,6 @@
 # Configuration specification: colours, fonts and logos
 
-Status: **proposal; not accepted (H1 open).** This is the public, self-contained specification of the configuration file shared by every WakoLab design system (Console, Folio, Marquee and future ones). It is adapted, with provenance, from the configuration proposal integrated in the WakoLab central repository (`docs/design/design-system-standard/CONFIGURATION.md` at `be3ca126dd9a772faf0e35951a9ebac0a5a46762`); that source is optional reading and not needed to implement this file. Items marked **[proposed choice]** are Sol's recommendations awaiting review; everything else restates the accepted model.
+Status: **integrated specification of the accepted configuration model**, extended for system-declared roles under [#8](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/8) after midas accepted the kit policy ([decision](https://github.com/WakoLab-DesignSystems/wakolab-design-systems-standard/issues/6#issuecomment-6933743616)). Items still marked **[proposed choice]** were not part of that decision. This is the public, self-contained specification of the configuration file shared by every WakoLab design system (Console, Folio, Marquee and future ones). It is adapted, with provenance, from the configuration proposal integrated in the WakoLab central repository (`docs/design/design-system-standard/CONFIGURATION.md` at `be3ca126dd9a772faf0e35951a9ebac0a5a46762`); that source is optional reading and not needed to implement this file. Items marked **[proposed choice]** are recommendations; Console implements them, but they are not separately accepted decisions. Everything else restates the accepted model.
 
 **Accepted model (midas's decision, relayed on WakoLab#48):** the consumer sets explicit light and dark values and points to their own font and logo files. Values are used exactly as written. Nothing is derived, checked, corrected or approved. Status colours, neutral roles and the logo are configurable like any other role.
 
@@ -21,7 +21,7 @@ design/
 | --- | --- | --- | --- |
 | `system` | string | yes | The system the file targets: `console`, `folio`, `marquee` |
 | `systemVersion` | string | yes | The system version the file was written for. Informational: a newer system reports unknown keys structurally |
-| `colors` | object | no | `light` and/or `dark`, each an object of colour roles (§2) |
+| `colors` | object | no | `light` and/or `dark`, each an object of colour roles: the common roles of §2 and any roles the target system declares (§2.1) |
 | `fonts` | object | no | Font roles `ui`, `display`, `prose`, `code` (§3) |
 | `logo` | object | no | Logo files and accessible name (§4) |
 
@@ -46,6 +46,26 @@ Each system repository ships a **`config.default.json`** listing every key with 
 
 **Omitted roles** keep the system's shipped default for that mode. The **only** exception is `action-pressed`, which uses the effective `action-hover` of the same mode (above). In particular, configuring `action` alone does **not** change `link` or `focus`, even where the system's default for them equals the default `action`; set them explicitly to change them. Implementations must not choose another behaviour.
 
+### 2.1 System-declared roles
+
+A system may declare **additional colour roles** for surfaces that only it has. A declared role:
+- is listed, with its use and its light and dark defaults, in the system's README, `config.default.json` and `config.schema.json`;
+- is set per mode like any other role and applied exactly as written;
+- keeps its **own** same-mode default when omitted; it never follows another role;
+- is reported as an unknown role (structurally, §7) when the file targets a system that does not declare it.
+
+A declared role must not rename or replace a common role. Declaring roles changes nothing for systems that do not declare them.
+
+**Folio (proposed, not implemented).** The following mapping is part of this contract as the planned Folio declaration. **Des confirms the names and uses before the Folio extraction; Folio does not implement them yet.**
+
+| Role | Used for | Default, light and dark |
+| --- | --- | --- |
+| `panel` | Background of the editorial panel | `#152e37` in both modes |
+| `on-panel` | Text on the panel | `#edf6ee` in both modes |
+| `panel-accent` | Eyebrow text and decorative border on the panel, and the focus outline inside it | `#cef1c5` in both modes |
+
+The defaults come from the WakoLab frontend at `e492bec` ([KIT_PROPOSAL §8](KIT_PROPOSAL.md#8-folio-and-marquee-executable-extraction-scopes)). Folio's common `accent` role keeps its own defaults and is not reused for the panel.
+
 *Deferred proposal (M4), not part of this contract:* letting such roles follow a configured `action`. It changes behaviour only if Orc and midas explicitly accept it, with a new version of this specification.
 
 ## 3. Fonts
@@ -58,8 +78,8 @@ Each system repository ships a **`config.default.json`** listing every key with 
 
 | Field | Type | Meaning |
 | --- | --- | --- |
-| `family` | string | The consumer's label for the font |
-| `files` | array, optional | Font files, each `{ "src": Asset, "weight"?: string, "style"?: string, "stretch"?: string, "unicodeRange"?: string }`, with CSS `@font-face` descriptor syntax |
+| `family` | string, **required** in every supplied role | The consumer's label for the font |
+| `files` | array, optional; **if present, at least one file** | Font files, each `{ "src": Asset, "weight"?: string, "style"?: string, "stretch"?: string, "unicodeRange"?: string }`, with CSS `@font-face` descriptor syntax |
 
 - **With `files`:** all the role's files form **one face set**, registered under **one internal family name** owned by the system, never under `family`. Each file keeps its own descriptors, so bold, italic and subset files are selected normally within that family. Two roots, or a host, may use the same `family` with different files without affecting each other ([EXTRACTION_MATRIX §4](EXTRACTION_MATRIX.md#4-isolation-contract-e1-n6), R2). The `family` label is kept for documentation and diagnostics.
 - **Without `files`:** `family` is used as the name of a font already available to the page (installed, or loaded by the host). It is global by nature; that is the consumer's choice.
@@ -92,7 +112,7 @@ A consumer may also set custom properties on the root by hand. That is a documen
 
 ## 7. Diagnostics
 
-Only **structural** problems are reported: invalid JSON, unknown `system`, unknown key or role, a value of the wrong JSON type, an Asset that cannot be resolved or fails to load. The key concerned is ignored and its default is used. Colour values, contrast, font choices and logos are never judged, warned about, corrected or approved; whether a string is a valid CSS colour is left to the browser.
+Only **structural** problems are reported: invalid JSON, unknown `system`, unknown key, a role that is neither common nor declared by the target system, a value of the wrong JSON type, an Asset that cannot be resolved or fails to load. The key concerned is ignored and its default is used. Colour values, contrast, font choices and logos are never judged, warned about, corrected or approved; whether a string is a valid CSS colour is left to the browser.
 
 ## 8. Not configuration keys
 

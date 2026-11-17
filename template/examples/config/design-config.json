@@ -1,0 +1,30 @@
+{
+  "system": "{{SYSTEM}}",
+  "systemVersion": "{{REPLACE}}",
+  "colors": {
+    "light": {
+      "action": "{{REPLACE}}"
+    },
+    "dark": {
+      "action": "{{REPLACE}}"
+    }
+  },
+  "fonts": {
+    "ui": {
+      "family": "{{REPLACE}}",
+      "files": [
+        {
+          "src": "fonts/{{REPLACE}}.woff2"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "mark": "logo/mark.svg",
+    "wordmark": {
+      "light": "logo/wordmark-light.svg",
+      "dark": "logo/wordmark-dark.svg"
+    },
+    "alt": "{{REPLACE}}"
+  }
+}
