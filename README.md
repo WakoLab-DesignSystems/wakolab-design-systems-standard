@@ -21,6 +21,7 @@ Each system repository (Console, Folio, Marquee) is **autonomous**: it can be cl
 | [docs/DIRECTIONS.md](docs/DIRECTIONS.md) | Directions for a new system (proposal) |
 | [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Public specification of the configuration file (colours, fonts, logos), with a [synthetic example](docs/examples/design-config.example.json) (proposal) |
 | [docs/EXTRACTION_MATRIX.md](docs/EXTRACTION_MATRIX.md) | Source in the WakoLab frontend → autonomous copy in each system repository → adaptation needed |
+| [docs/KIT_PROPOSAL.md](docs/KIT_PROPOSAL.md) | Distributable kit layout, usage paths, new-system path and conformance checklist (proposal, #6) |
 | [docs/INDEPENDENCE_CHECK.md](docs/INDEPENDENCE_CHECK.md) | How to prove that a system works from an isolated clone |
 
 ## Licence
