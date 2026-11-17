@@ -10,7 +10,7 @@ This repository contains **documentation only**: directions for writing WakoLab 
 
 1. Read [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS-SYNC.md](AGENTS-SYNC.md).
 2. Inspect the current branch, open pull requests and the issue you work on. Preserve other people's work.
-3. For each issue, create a dedicated branch from the current `dev` and open a pull request against `dev`; do not merge, tag, release or change repository settings unless the issue explicitly authorizes it.
+3. For each issue, create a dedicated branch from the current `dev` and open a pull request against `dev`. Do not merge, tag, release or change repository settings yourself: Orc authorizes the exact reviewed HEAD and Rel merges it; staging and production promotion need separate GOs from midas ([gates](CONTRIBUTING.md#integration-and-promotion)).
 
 ## Working rules
 
@@ -21,7 +21,7 @@ This repository contains **documentation only**: directions for writing WakoLab 
 - Documentation, code comments and issues are in English.
 - No secrets, personal data or private conversation content in commits or logs.
 
-Follow the integration and promotion gates in [CONTRIBUTING.md](CONTRIBUTING.md#integration-and-promotion). Orc authorizes the reviewed HEAD and Rel executes the merge; integration does not grant staging, release or production approval.
+Follow the integration and promotion gates in [CONTRIBUTING.md](CONTRIBUTING.md#integration-and-promotion). The reviewer follows the implementing model (Codex → Revus, Claude → Revex). Orc authorizes the reviewed HEAD and Rel executes the merge; integration does not grant staging, release or production approval.
 
 ## Coordination
 
